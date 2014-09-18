@@ -1,0 +1,1089 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<WL5G3N0:definitions name="databankingServiceDefinitions" targetNamespace="http://csas.cz/mci" xmlns="" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://csas.cz/mci" xmlns:WL5G3N2="http://schemas.xmlsoap.org/wsdl/soap/">
+  <WL5G3N0:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:cz.csas.mci.cbl.bom.pub" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="DebTrnHistoryFilter">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="AccountingMode" nillable="true">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="1" name="DtEnd" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="DtStart" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="TrnHistoryType" nillable="true" type="xs:int"/>
+          <xs:element minOccurs="1" name="TransactionMode" nillable="true">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="1" name="AmountFrom" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="AmountTo" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="VariableSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="ConstantSymbol" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SpecificSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="TargetAccount" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Account">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Prefix" nillable="true" type="xs:int"/>
+          <xs:element minOccurs="1" name="Number" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="Bankcode" nillable="true" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GetAccountBalancesRequest">
+        <xs:complexContent>
+          <xs:extension base="java:DabRequestBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="B24client" nillable="true" type="java:Client"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="DabRequestBase">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="RequestID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="RunAsUserID" nillable="true" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Client">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Ico" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BirthNumber" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PaymentOrderFC">
+        <xs:complexContent>
+          <xs:extension base="java:PaymentOrder" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="Currency" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="PaymentOrder">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="ConstantSymbol" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ClientAccount" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="AccountingDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="SpecificSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="MessageForRecipient" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="PaymentType" nillable="true">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="1" name="VariableSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="Amount" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="MessageForPrincipal" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TargetAccount" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="ExpressPayment" nillable="true" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GetAccountStatementsRequest">
+        <xs:complexContent>
+          <xs:extension base="java:DabRequestBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="Accounts" nillable="true" type="java:Account"/>
+              <xs:element minOccurs="1" name="DateFrom" nillable="true" type="xs:dateTime"/>
+              <xs:element minOccurs="1" name="DateTo" nillable="true" type="xs:dateTime"/>
+              <xs:element minOccurs="1" name="OnlyNew" nillable="true" type="xs:boolean"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="AccountBalances">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="Balances" nillable="true" type="java:AccountBalance" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AccountBalance">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Account" nillable="true" type="java:CSAccount" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="Balance" nillable="true" type="java:Balance" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="ValidTo" nillable="true" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CSAccount">
+        <xs:complexContent>
+          <xs:extension base="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="Type" nillable="true">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="1" name="Branch" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="Currency" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="ContractID" nillable="true" type="xs:long"/>
+              <xs:element minOccurs="1" name="Alias" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="Balance">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Overdraft" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="Current" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="Disposable" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="BalanceAfterBooking" nillable="true" type="xs:decimal"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="MsgDabHeader">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="RequestID" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CreateFcPaymentOrderRequest">
+        <xs:complexContent>
+          <xs:extension base="java:DabRequestBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="Order" nillable="true" type="java:PaymentOrderFC"/>
+              <xs:element minOccurs="1" name="Conf" nillable="true" type="java:Confirmation"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="Confirmation">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Fax" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Emaillang" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Email" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GetTransactionHistoryResponse">
+        <xs:complexContent>
+          <xs:extension base="java:DabResponseBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="DebTrnHistory" nillable="true" type="java:DebTrnHistory"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="DabResponseBase"/>
+      <xs:complexType name="DebTrnHistory">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="StartBalance" nillable="true" type="xs:decimal"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="TrnHistoryElements" nillable="true" type="java:DebTrnHistoryElement" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="EndBalance" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="PgInfo" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="IsLastPage" nillable="true" type="xs:boolean"/>
+          <xs:element minOccurs="1" name="IsLocal" nillable="true" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DebTrnHistoryElement">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="TargetAccount" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="PayerVariableSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="Currency" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="AccCurrency" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="AccountingDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="EffectiveDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="PayeeVariableSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="Amount" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="AccAmount" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="MessageForPrincipal" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageToRecipient" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ConstantSymbol" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SpecificSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="OtherAccountName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="StornoFlag" nillable="true" type="xs:boolean"/>
+          <xs:element minOccurs="1" name="ReferenceNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TransactionTypeDescription" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="DebTrnHistoryDetail" nillable="true" type="java:DebTrnHistoryDetail" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DebTrnHistoryDetail">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="SourceModule" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="DueDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="PostDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="ValueDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="Item" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ItemIdentification" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TranAmtAcctCcy" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="TranAmtTranCcy" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="TranCurrency" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CounterpartAcctNo" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CounterpartAcctDesc" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ExchangeRateTranCcy" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ExchangeRateAcctCcy" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ConstantSymbol" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="VariableSymbol" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SpecificSymbol" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForRecipient1" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForRecipient2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForRecipient3" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForRecipient4" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TranDescription1" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TranDescription2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TranDescription3" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TranDescription4" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="SwiftBankName1" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenBankName2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FtChargeDetail" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FtBankCharge" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TranAmt" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FtRefNumber1" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FtRefNumber2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FtTranDescription1" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FtTranDescription2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FtTranDescription3" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ClFeeType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ClFeeNarrative1" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ClFeeNarrative2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForPrincipal1" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForPrincipal2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForPrincipal3" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForPrincipal4" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PaymentOrders">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="Orders" nillable="true" type="java:PaymentOrder" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CleanPaymentOrders">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="Orders" nillable="true" type="java:CleanPaymentOrder" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CleanPaymentOrder">
+        <xs:complexContent>
+          <xs:extension base="java:CleanPaymentOrderBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="CachePayment" nillable="true" type="xs:boolean"/>
+              <xs:element minOccurs="1" name="PersonalDelivery" nillable="true" type="xs:boolean"/>
+              <xs:element minOccurs="1" name="CheckPayment" nillable="true" type="xs:boolean"/>
+              <xs:element minOccurs="1" name="BankingCharges" nillable="true" type="xs:int"/>
+              <xs:element minOccurs="1" name="PhoneAdviceNum" nillable="true" type="java:CPOInfo"/>
+              <xs:element minOccurs="1" name="EPaymentRef" nillable="true" type="java:CPOInfo"/>
+              <xs:element minOccurs="1" name="CachePaymentIdentification" nillable="true" type="java:CPOInfo"/>
+              <xs:element minOccurs="1" name="AdditionalInstructions" nillable="true" type="java:CPOInfo"/>
+              <xs:element minOccurs="1" name="EffBenPhoneAdviceNum" nillable="true" type="java:CPOInfo"/>
+              <xs:element minOccurs="1" name="Priority" nillable="true" type="xs:int"/>
+              <xs:element minOccurs="1" name="BenBankClearingCode" nillable="true" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CleanPaymentOrderBase">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="BenIdType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenIdCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="PayerIdCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Amount" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="PhoneOrEmail" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="NegotiatedExRate" nillable="true" type="xs:boolean"/>
+          <xs:element minOccurs="1" name="PayerIdType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Advice" nillable="true" type="java:Confirmation" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="NegExRateAccountCZK" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="ClientAccount" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="PaymentReference" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FaxEurope" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Currency" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenAccountStreet" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FaxOther" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenBankBICCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="MessageForPrincipal" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ContactPerson" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenAccountNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenBankAnotherNote" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenBankCountryCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenAccountName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenBankName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="FaxCzech" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Purpose" nillable="true" type="java:CPOInfo" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="BenBankStreet" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BenBankCity" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="AccountingDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="BenAccountCity" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="NegExRateTurnoverCZK" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="BenAccountCountry" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CPOInfo">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Item4" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Item3" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Item2" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Item1" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CreateCleanPaymentOrdersRequest">
+        <xs:complexContent>
+          <xs:extension base="java:DabRequestBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="BatchSplit" nillable="true" type="xs:boolean"/>
+              <xs:element minOccurs="1" name="Orders" nillable="true" type="java:CleanPaymentOrders"/>
+              <xs:element minOccurs="1" name="Conf" nillable="true" type="java:Confirmation"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CreateDomesticPaymentOrdersResponse">
+        <xs:complexContent>
+          <xs:extension base="java:DabResponseBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="TrnResponse" nillable="true" type="java:TrnResponse"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TrnResponse">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="SentToTxs" nillable="true" type="xs:boolean"/>
+          <xs:element minOccurs="1" name="ReferenceNumber" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CreateDomesticPaymentOrdersRequest">
+        <xs:complexContent>
+          <xs:extension base="java:DabRequestBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="BatchSplit" nillable="true" type="xs:boolean"/>
+              <xs:element minOccurs="1" name="Orders" nillable="true" type="java:PaymentOrders"/>
+              <xs:element minOccurs="1" name="Conf" nillable="true" type="java:Confirmation"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CreateFcPaymentOrderResponse">
+        <xs:complexContent>
+          <xs:extension base="java:DabResponseBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="TrnResponse" nillable="true" type="java:TrnResponse"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="DabRequestStatus">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Status" nillable="true">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="1" name="ErrorMsg" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Timestamp" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="ErrorCode" nillable="true" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GetAccountBalancesResponse">
+        <xs:complexContent>
+          <xs:extension base="java:DabResponseBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="AccountBalances" nillable="true" type="java:AccountBalances"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CreateCleanPaymentOrdersResponse">
+        <xs:complexContent>
+          <xs:extension base="java:DabResponseBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="TrnResponse" nillable="true" type="java:TrnResponse"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="GetAccountStatementsResponse">
+        <xs:complexContent>
+          <xs:extension base="java:DabResponseBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="ExportStatements" nillable="true" type="java:ExportStatements"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ExportStatements">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="Statements" nillable="true" type="java:ExportStatement" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ExportStatement">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Account" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="AccountName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="RejectedTurnCount" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="StartBalance" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="StatOrderNum" nillable="true" type="xs:int"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="Details" nillable="true" type="java:ExportDetail" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="AccountingDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="OldBalanceDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="AccountCurrency" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="StatID" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="EndBalance" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="CreditTurnover" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="DebitTurnover" nillable="true" type="xs:decimal"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ExportDetail">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="BfVariableSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="SpecificSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="TargetAccountName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ExchRateAcc" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="TurnAccDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="AccAmount" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="DepreciationDate" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TurnID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Spp" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="PaymentInfo" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TurnAmount" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="TransSubtractDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="ConstantSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="Storno" nillable="true">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="1" name="TargetAccount" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          <xs:element minOccurs="1" name="BenIdCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="PayerVariableSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="ExchRateTur" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="ItemText" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="TurnText" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Currency" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="PayerIdCode" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="DebTrnHistoryDetail" nillable="true" type="java:DebTrnHistoryDetail" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GetTransactionHistoryRequest">
+        <xs:complexContent>
+          <xs:extension base="java:DabRequestBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="Account" nillable="true" type="java:Account"/>
+              <xs:element minOccurs="1" name="Filter" nillable="true" type="java:DebTrnHistoryFilter"/>
+              <xs:element minOccurs="1" name="PgInfo" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="1" name="AllPages" nillable="true" type="xs:boolean"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="Accounts">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="Accounts" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:cz.csas.mci.s24.bom.pub" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="java:cz.csas.mci.cbl.bom.pub"/>
+      <xs:complexType name="ShoppingBasketsHistoryFilter">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="EshopId" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="EshopNumber" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="DateFrom" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="DateTo" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="VariableSymbol" nillable="true" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ShoppingBasketsHistory">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="ShoppingBasketElements" nillable="true" type="java:ShoppingBasketsHistoryElement" xmlns:java="java:cz.csas.mci.s24.bom.pub"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ShoppingBasketsHistoryElement">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Account" nillable="true" type="java:Account" xmlns:java="java:cz.csas.mci.s24.bom.pub"/>
+          <xs:element minOccurs="1" name="Amount" nillable="true" type="xs:decimal"/>
+          <xs:element minOccurs="1" name="Currency" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Date" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="SpecificSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="VariableSymbol" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="ConstantSymbol" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Account">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Prefix" nillable="true" type="xs:int"/>
+          <xs:element minOccurs="1" name="Number" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="Bankcode" nillable="true" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GetShoppingBasketsRequest">
+        <xs:complexContent>
+          <xs:extension base="java:DabRequestBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="Filter" nillable="true" type="java1:ShoppingBasketsHistoryFilter" xmlns:java1="java:cz.csas.mci.s24.bom.pub"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="GetShoppingBasketsResponse">
+        <xs:complexContent>
+          <xs:extension base="java:DabResponseBase" xmlns:java="java:cz.csas.mci.cbl.bom.pub">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="ShoppingBasketsHistory" nillable="true" type="java1:ShoppingBasketsHistory" xmlns:java1="java:cz.csas.mci.s24.bom.pub"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://csas.cz/mci" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="java:cz.csas.mci.cbl.bom.pub"/>
+      <xs:import namespace="java:cz.csas.mci.s24.bom.pub"/>
+      <xs:element name="getBankCertificate">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getBankCertificateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createCleanPaymentOrders2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="createCleanPaymentOrdersRequest" type="java:CreateCleanPaymentOrdersRequest" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createCleanPaymentOrders2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:CreateCleanPaymentOrdersResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createDomesticPaymentOrders">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="header" type="java:MsgDabHeader" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="orders" type="java:PaymentOrders" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="conf" type="java:Confirmation" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createDomesticPaymentOrdersResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:TrnResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createCleanPaymentOrders">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="header" type="java:MsgDabHeader" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="orders" type="java:CleanPaymentOrders" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="conf" type="java:Confirmation" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createCleanPaymentOrdersResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:TrnResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountBalances2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="getAccountBalancesRequest" type="java:GetAccountBalancesRequest" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountBalances2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:GetAccountBalancesResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createFcPaymentOrder">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="header" type="java:MsgDabHeader" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="order" type="java:PaymentOrderFC" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="conf" type="java:Confirmation" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createFcPaymentOrderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:TrnResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getShoppingBaskets2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="getShoppingBasketsRequest" type="java:GetShoppingBasketsRequest" xmlns:java="java:cz.csas.mci.s24.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getShoppingBaskets2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:GetShoppingBasketsResponse" xmlns:java="java:cz.csas.mci.s24.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getRequestStatus">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="header" type="java:MsgDabHeader" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="client" type="java:Client" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getRequestStatusResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:DabRequestStatus" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTransactionHistory2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="getTransactionHistoryRequest" type="java:GetTransactionHistoryRequest" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTransactionHistory2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:GetTransactionHistoryResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createFcPaymentOrder2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="createFcPaymentOrderRequest" type="java:CreateFcPaymentOrderRequest" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createFcPaymentOrder2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:CreateFcPaymentOrderResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createDomesticPaymentOrders2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="createDomesticPaymentOrdersRequest" type="java:CreateDomesticPaymentOrdersRequest" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createDomesticPaymentOrders2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:CreateDomesticPaymentOrdersResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTransactionHistory">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="account" type="java:Account" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="filter" type="java:DebTrnHistoryFilter" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="pgInfo" type="xs:string"/>
+            <xs:element minOccurs="0" name="allPages" nillable="true" type="xs:boolean"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTransactionHistoryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:DebTrnHistory" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getShoppingBaskets">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="filter" type="java:ShoppingBasketsHistoryFilter" xmlns:java="java:cz.csas.mci.s24.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getShoppingBasketsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:ShoppingBasketsHistory" xmlns:java="java:cz.csas.mci.s24.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountBalances">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="b24client" type="java:Client" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountBalancesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:AccountBalances" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountStatements">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="accounts" type="java:Accounts" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+            <xs:element name="dateFrom" type="xs:dateTime"/>
+            <xs:element name="dateTo" type="xs:dateTime"/>
+            <xs:element name="onlyNew" type="xs:boolean"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountStatementsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:ExportStatements" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountStatements2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="getAccountStatementsRequest" type="java:GetAccountStatementsRequest" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAccountStatements2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="java:GetAccountStatementsResponse" xmlns:java="java:cz.csas.mci.cbl.bom.pub"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="getBankCertificate">
+    <WL5G3N0:part element="WL5G3N1:getBankCertificate" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getBankCertificateResponse">
+    <WL5G3N0:part element="WL5G3N1:getBankCertificateResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createCleanPaymentOrders2">
+    <WL5G3N0:part element="WL5G3N1:createCleanPaymentOrders2" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createCleanPaymentOrders2Response">
+    <WL5G3N0:part element="WL5G3N1:createCleanPaymentOrders2Response" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createDomesticPaymentOrders">
+    <WL5G3N0:part element="WL5G3N1:createDomesticPaymentOrders" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createDomesticPaymentOrdersResponse">
+    <WL5G3N0:part element="WL5G3N1:createDomesticPaymentOrdersResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createCleanPaymentOrders">
+    <WL5G3N0:part element="WL5G3N1:createCleanPaymentOrders" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createCleanPaymentOrdersResponse">
+    <WL5G3N0:part element="WL5G3N1:createCleanPaymentOrdersResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountBalances2">
+    <WL5G3N0:part element="WL5G3N1:getAccountBalances2" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountBalances2Response">
+    <WL5G3N0:part element="WL5G3N1:getAccountBalances2Response" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createFcPaymentOrder">
+    <WL5G3N0:part element="WL5G3N1:createFcPaymentOrder" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createFcPaymentOrderResponse">
+    <WL5G3N0:part element="WL5G3N1:createFcPaymentOrderResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getShoppingBaskets2">
+    <WL5G3N0:part element="WL5G3N1:getShoppingBaskets2" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getShoppingBaskets2Response">
+    <WL5G3N0:part element="WL5G3N1:getShoppingBaskets2Response" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getRequestStatus">
+    <WL5G3N0:part element="WL5G3N1:getRequestStatus" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getRequestStatusResponse">
+    <WL5G3N0:part element="WL5G3N1:getRequestStatusResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getTransactionHistory2">
+    <WL5G3N0:part element="WL5G3N1:getTransactionHistory2" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getTransactionHistory2Response">
+    <WL5G3N0:part element="WL5G3N1:getTransactionHistory2Response" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createFcPaymentOrder2">
+    <WL5G3N0:part element="WL5G3N1:createFcPaymentOrder2" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createFcPaymentOrder2Response">
+    <WL5G3N0:part element="WL5G3N1:createFcPaymentOrder2Response" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createDomesticPaymentOrders2">
+    <WL5G3N0:part element="WL5G3N1:createDomesticPaymentOrders2" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createDomesticPaymentOrders2Response">
+    <WL5G3N0:part element="WL5G3N1:createDomesticPaymentOrders2Response" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getTransactionHistory">
+    <WL5G3N0:part element="WL5G3N1:getTransactionHistory" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getTransactionHistoryResponse">
+    <WL5G3N0:part element="WL5G3N1:getTransactionHistoryResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getShoppingBaskets">
+    <WL5G3N0:part element="WL5G3N1:getShoppingBaskets" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getShoppingBasketsResponse">
+    <WL5G3N0:part element="WL5G3N1:getShoppingBasketsResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountBalances">
+    <WL5G3N0:part element="WL5G3N1:getAccountBalances" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountBalancesResponse">
+    <WL5G3N0:part element="WL5G3N1:getAccountBalancesResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountStatements">
+    <WL5G3N0:part element="WL5G3N1:getAccountStatements" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountStatementsResponse">
+    <WL5G3N0:part element="WL5G3N1:getAccountStatementsResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountStatements2">
+    <WL5G3N0:part element="WL5G3N1:getAccountStatements2" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getAccountStatements2Response">
+    <WL5G3N0:part element="WL5G3N1:getAccountStatements2Response" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="databanking">
+    <WL5G3N0:operation name="getBankCertificate" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getBankCertificate"/>
+      <WL5G3N0:output message="WL5G3N1:getBankCertificateResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createCleanPaymentOrders2" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:createCleanPaymentOrders2"/>
+      <WL5G3N0:output message="WL5G3N1:createCleanPaymentOrders2Response"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createDomesticPaymentOrders" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:createDomesticPaymentOrders"/>
+      <WL5G3N0:output message="WL5G3N1:createDomesticPaymentOrdersResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createCleanPaymentOrders" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:createCleanPaymentOrders"/>
+      <WL5G3N0:output message="WL5G3N1:createCleanPaymentOrdersResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountBalances2" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getAccountBalances2"/>
+      <WL5G3N0:output message="WL5G3N1:getAccountBalances2Response"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createFcPaymentOrder" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:createFcPaymentOrder"/>
+      <WL5G3N0:output message="WL5G3N1:createFcPaymentOrderResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getShoppingBaskets2" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getShoppingBaskets2"/>
+      <WL5G3N0:output message="WL5G3N1:getShoppingBaskets2Response"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getRequestStatus" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getRequestStatus"/>
+      <WL5G3N0:output message="WL5G3N1:getRequestStatusResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getTransactionHistory2" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getTransactionHistory2"/>
+      <WL5G3N0:output message="WL5G3N1:getTransactionHistory2Response"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createFcPaymentOrder2" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:createFcPaymentOrder2"/>
+      <WL5G3N0:output message="WL5G3N1:createFcPaymentOrder2Response"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createDomesticPaymentOrders2" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:createDomesticPaymentOrders2"/>
+      <WL5G3N0:output message="WL5G3N1:createDomesticPaymentOrders2Response"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getTransactionHistory" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getTransactionHistory"/>
+      <WL5G3N0:output message="WL5G3N1:getTransactionHistoryResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getShoppingBaskets" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getShoppingBaskets"/>
+      <WL5G3N0:output message="WL5G3N1:getShoppingBasketsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountBalances" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getAccountBalances"/>
+      <WL5G3N0:output message="WL5G3N1:getAccountBalancesResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountStatements" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getAccountStatements"/>
+      <WL5G3N0:output message="WL5G3N1:getAccountStatementsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountStatements2" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:getAccountStatements2"/>
+      <WL5G3N0:output message="WL5G3N1:getAccountStatements2Response"/>
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="databankingServiceSoapBinding" type="WL5G3N1:databanking">
+    <WL5G3N2:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <WL5G3N0:operation name="getBankCertificate">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createCleanPaymentOrders2">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createDomesticPaymentOrders">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createCleanPaymentOrders">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountBalances2">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createFcPaymentOrder">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getShoppingBaskets2">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getRequestStatus">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getTransactionHistory2">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createFcPaymentOrder2">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createDomesticPaymentOrders2">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getTransactionHistory">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getShoppingBaskets">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountBalances">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountStatements">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getAccountStatements2">
+      <WL5G3N2:operation style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="databankingService">
+    <WL5G3N0:port binding="WL5G3N1:databankingServiceSoapBinding" name="DatabankingSoapPort">
+      <WL5G3N2:address location="https://www.business24.cz/databanking-b24/DatabankingWS"/>
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>
